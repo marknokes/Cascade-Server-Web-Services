@@ -12,7 +12,7 @@ if ( !isset( $argv ) )
 $which_system   = 'p'; // required for auth_user.php below
 $break          = "\r\n";
 $last_num_days  = isset( $argv[1] ) ? $argv[1] : 1;
-$site         	= isset( $argv[2] ) ? $argv[2] : "University of Central Oklahoma";
+$site         	= isset( $argv[2] ) ? $argv[2] : "";
 $folder_path 	= isset( $argv[3] ) ? $argv[3] : "/";
 $file_name 		= 'C:\Users\Public\Desktop\report_' . time() . '.csv';
 $csv_headers 	= array(

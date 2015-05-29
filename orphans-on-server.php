@@ -1,6 +1,10 @@
 <?php
 if ( !isset( $argv ) ) exit; // Prevent browser access
 
+$production = "PRODUCTION_SERVER_NAME";
+
+$test = "TEST_SERVER_NAME";
+
 $which_system = isset( $argv[1] ) ? $argv[1] : false;
 
 if ( false === $which_system || ( $which_system != "p" && $which_system != "t" ) )
@@ -8,9 +12,9 @@ if ( false === $which_system || ( $which_system != "p" && $which_system != "t" )
      
 $machine = gethostname();
      
-if ( "p" !== $which_system && "lono" === $machine )
+if ( "p" !== $which_system && $production === $machine )
      die("You specified testing but you're on the production server!");
-elseif( "t" !== $which_system && "lonotest" === $machine )
+elseif( "t" !== $which_system && $test === $machine )
      die("You specified production but you're on the test server!");
 
 require_once( 'cascade_ws/auth_user.php' );

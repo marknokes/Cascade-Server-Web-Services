@@ -1,8 +1,10 @@
 <?php
 
-error_reporting(0);
-
 if ( !isset( $argv ) ) exit; // Prevent browser access
+
+$wwwrootPath = "/inetpub/wwwroot/";
+
+$site = 'Cascade Server Site Name';
 
 $which_system = isset( $argv[1] ) ? $argv[1] : false;
 
@@ -11,17 +13,17 @@ if ( false === $which_system )
 
 require_once( 'cascade_ws/auth_user.php' );
 
-$server_dirs = array_filter( glob( '/inetpub2/wwwroot/*' ), 'is_dir' );
+$server_dirs = array_filter( glob( $wwwrootPath . '*' ), 'is_dir' );
 
 $wcms_directories = array();
 
 foreach( $server_dirs as &$dir )
 {
-	$dir = str_replace('/inetpub2/wwwroot/', '', $dir);
+	$dir = str_replace( $wwwrootPath, '', $dir );
 
 	try
 	{
-		$asset = Asset::getAsset( $service, Folder::TYPE, $dir, 'University of Central Oklahoma' );
+		$asset = Asset::getAsset( $service, Folder::TYPE, $dir, $site );
 
 		if ( $path = $asset->getPath() )
 			$wcms_directories[] = $path;
