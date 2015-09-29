@@ -11,7 +11,7 @@ $which_system = isset( $argv[1] ) ? $argv[1] : false;
 if ( false === $which_system )
      die("Please specify system. t or p for testing or production respectively.");
 
-require_once( 'cascade_ws/auth_user.php' );
+require_once( 'cascade_ws_ns/auth_user.php' );
 
 $server_dirs = array_filter( glob( $wwwrootPath . '*' ), 'is_dir' );
 
@@ -23,14 +23,14 @@ foreach( $server_dirs as &$dir )
 
 	try
 	{
-		$asset = Asset::getAsset( $service, Folder::TYPE, $dir, $site );
+		$asset = cascade_ws_asset\Asset::getAsset( $service, cascade_ws_asset\Folder::TYPE, $dir, $site );
 
 		if ( $path = $asset->getPath() )
 			$wcms_directories[] = $path;
 	}
-	catch( NullAssetException $e )
+	catch( cascade_ws_exception\NullAssetException $e )
 	{
-
+		continue;
 	}
 }
 

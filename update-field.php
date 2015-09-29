@@ -6,7 +6,7 @@ $which_system = isset( $argv[1] ) ? $argv[1] : false;
 if ( false === $which_system )
      die("Please specify system. t or p for testing or production respectively.");
 
-require_once( 'cascade_ws/auth_user.php' );
+require_once( 'cascade_ws_ns/auth_user.php' );
 
 if ( isset( $argv ) && sizeof( $argv ) < 6 )
 {
@@ -23,7 +23,7 @@ $site_name 	= $argv[2];
 $folder_id 	= $argv[3];
 $node 		= $argv[4];
 $new_text	= $argv[5];
-$function 	= array( Page::TYPE => array( "assetTreeUpdatePage" ) );
+$function 	= array( cascade_ws_asset\Page::TYPE => array( "assetTreeUpdatePage" ) );
 $params 	= array( 
 	'assetTreeUpdatePage' => array(
 		'data' 	=> $new_text,
@@ -31,7 +31,7 @@ $params 	= array(
 	)
 );
 
-$cascade->getAsset( Folder::TYPE, $folder_id, $site_name )->
+$cascade->getAsset( cascade_ws_asset\Folder::TYPE, $folder_id, $site_name )->
 	getAssetTree()->
 		traverse( $function, $params );
 

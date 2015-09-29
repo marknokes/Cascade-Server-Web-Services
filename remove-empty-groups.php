@@ -7,7 +7,7 @@ $which_system = isset( $argv[1] ) ? $argv[1] : false;
 if ( false === $which_system )
      die("Please specify system. t or p for testing or production respectively.");
 
-require_once( 'cascade_ws/auth_user.php' );
+require_once( 'cascade_ws_ns/auth_user.php' );
 
 $empty_groups = getEmptyGroups( $service );
 

@@ -17,129 +17,128 @@ if ( "p" !== $which_system && $production === $machine )
 elseif( "t" !== $which_system && $test === $machine )
      die("You specified production but you're on the test server!");
 
-require_once( 'cascade_ws/auth_user.php' );
+require_once( 'cascade_ws_ns/auth_user.php' );
 
 if ( isset( $argv ) && sizeof( $argv ) < 6 )
 {
-    echo "\r\n" . 'Error - 5 Args required.' . "\r\n" . "\r\n"; 
-    echo 'System     [t,p] t = testing, p = production' . "\r\n";
-    echo 'Root Path  Ex: /inetpub2/wwwroot/' . "\r\n";
-    echo 'Rel Path   path/to/directoy/' . "\r\n";
-    echo 'Folder Id  Click folder in cascade copy string from URL after id=' . "\r\n";
-    echo 'Mode       l = list, d = delete' . "\r\n";
+    echo PHP_EOL . 'Error - 5 Args required.' . PHP_EOL . PHP_EOL; 
+    echo 'System     [t,p] t = testing, p = production' . PHP_EOL;
+    echo 'Root Path  Ex: /inetpub2/wwwroot/' . PHP_EOL;
+    echo 'Rel Path   path/to/directoy/' . PHP_EOL;
+    echo 'Folder Id  Click folder in cascade copy string from URL after id=' . PHP_EOL;
+    echo 'Mode       l = list, d = delete' . PHP_EOL;
     exit;
 }
 
-$root_path = $argv[2];
+$root_path   = $argv[2];
 
-$abs_path = $root_path . $argv[3];
+$abs_path    = $root_path . $argv[3];
 
-$folder_id = $argv[4];
+$folder_id   = $argv[4];
 
-$mode = $argv[5];
+$mode        = $argv[5];
 
-/*
-* No need to edit below this line
-*/
 $backup_file = $abs_path . $folder_id . '.zip';
 
-$functions = array( 
-    File::TYPE => array( F::STORE_ASSET_PATH ),
-    Page::TYPE => array( F::STORE_ASSET_PATH ),
-    Folder::TYPE => array( F::STORE_ASSET_PATH )
+$results     = $assets = $server_files = $difference = array();
+
+$functions   = array( 
+    cascade_ws_asset\File::TYPE   => array( 'assetTreeStore' ),
+    cascade_ws_asset\Page::TYPE   => array( 'assetTreeStore' ),
+    cascade_ws_asset\Folder::TYPE => array( 'assetTreeStore' )
 );
 
-$results = array();
+$cascade->getAsset( cascade_ws_asset\Folder::TYPE, $folder_id )->getAssetTree()->traverse( $functions, NULL, $results );
 
-$cascade->getAsset( Folder::TYPE, $folder_id )->getAssetTree()->traverse( $functions, NULL, $results );
+// Create an array of files and pages (without file extensions)
+foreach( $results['assetTreeStore'] as $key => $asset_array )
+{
+    if ( 'folder' === $key )
+        continue;
 
-$server_files = array();
+    foreach( $asset_array as $file )
+    {
+        $pathinfo = pathinfo( $file['path'] );
+        // We don't need the file extension. We're going to compare asset path/name from the server to cascade.
+        $assets[] = $pathinfo['dirname'] . "/" . $pathinfo['filename'];
+    }
+}
 
+// Store files from server into $server_files
 processServerFolder( $abs_path, $server_files );
 
-$difference = array();
-
+// If $file (from server) not in $assets array (from cascade), store differences in $difference
 foreach( $server_files as $file )
 {   
+    // Store actual server path here since we're about to alter $file for some checks
     $orphan = $file;
 
-    /*
-    * remove file extensions from $file for comparison to cascade asset name.
-    * Cascade page assets do not include a file ext. but file assets do. For
-    * example, if you are checking against a page asset with a configuration set
-    * that outputs PHP, you will need to add it below to get accurate results.
-    */
-    if ( StringUtility::endsWith( $file, '.html' ) )
-        $file = substr( $file, 0, -5 );
-    elseif(
-        StringUtility::endsWith( $file, '.htm' ) ||
-        StringUtility::endsWith( $file, '.asp' ) ||
-        StringUtility::endsWith( $file, '.xml' ) ||
-        StringUtility::endsWith( $file, '.php' )
-    )
-        $file = substr( $file, 0, -4 );
+    // Create an array of pathinfo. We'll use this to recreate the filename without an extension
+    $pathinfo = pathinfo( $file );   
     
-    // remove path from $file
-    if( StringUtility::startsWith( $file, $root_path ) )
+    // We don't need the file extension. We're going to compare asset path/name from the server to cascade.
+    $file = $pathinfo['dirname'] . "/" . $pathinfo['filename'];
+    
+    // remove root path from $file. We need it to look like it does in cascade...i.e., top-level/sub-level/asset, but NOT inetpub/wwwroot/top-level/sub-level/asset.
+    if( cascade_ws_utility\StringUtility::startsWith( $file, $root_path ) )
         $file = substr( $file, strlen( $root_path ) );
     
-    //compare the two and store the difference
-    if( !in_array( $file, $results[ F::STORE_ASSET_PATH ] ) ) {
+    //compare the two and store the difference.
+    if( !in_array( $file, $assets ) )
         $difference[] = $orphan;
-    }
-
 }
 
 if ( $difference )
 {
-    echo "\r\n" . "\r\n";
+    echo PHP_EOL . PHP_EOL;
 
+    // List mode
     if ( $mode === 'l' )
     {
         foreach( $difference as $asset )
-        {
-            echo $asset . "\r\n";
-        }
+            echo $asset . PHP_EOL;
     }
+    // Delete mode
     elseif ( $mode === 'd' )
     {
+        // Back up the files before deletion
         $zip = new ZipArchive;
 
-        // gotta back it up!
         if ( true === $zip->open( $backup_file, ZipArchive::CREATE ) )
         {
             foreach( $difference as $to_delete )
             {
-                if ( $zip->addFile( $to_delete, basename( $to_delete ) ) )
-                    echo 'Archived: ' . $to_delete . "\r\n";
+                // We must remove the forward slash from the beginning in order for the zip to work in Windows
+                if ( file_exists( $to_delete ) && $zip->addFile( $to_delete, trim( $to_delete, "/" ) ) )
+                    echo 'Archived: ' . $to_delete . PHP_EOL;
                 else
-                    echo 'Fail: ' . $to_delete . ' was not added to archive.' . "\r\n";   
+                    echo 'Fail: ' . $to_delete . ' was not added to archive.' . PHP_EOL;   
             }
 
             $zip->close();
 
-            echo "\r\n" . "\r\n";
-
+            echo PHP_EOL . PHP_EOL;
+            // After the files have been backed up, delete them from the server.
             foreach( $difference as $to_delete )
             {
                 if ( unlink( $to_delete ) )
-                    echo 'Deleted: ' . $to_delete . "\r\n";
+                    echo 'Deleted: ' . $to_delete . PHP_EOL;
                 else
                 {
                     $error = error_get_last();
-                    echo 'Error: ' . $error['message'] . "\r\n";
+                    echo 'Error: ' . $error['message'] . PHP_EOL;
                 }
             }
 
-            echo "\r\n" . 'Complete.' . "\r\n";
+            echo PHP_EOL . 'Complete.' . PHP_EOL;
 
-            echo "\r\n" . 'Backup file: ' . $backup_file . "\r\n";
+            echo PHP_EOL . 'Backup file: ' . $backup_file . PHP_EOL;
         }
         else
-            echo "\r\n" . 'Unable to save backup. No deletion performed.' . "\r\n";
+            echo PHP_EOL . 'Unable to save backup. No deletion performed.' . PHP_EOL;
     }
     else
-        echo "\r\n" . 'Mode should be l or d.' . "\r\n";
+        echo PHP_EOL . 'Mode should be l or d.' . PHP_EOL;
 }
 else
-    echo "\r\n" . 'No orphaned files!' . "\r\n"; 
+    echo PHP_EOL . 'No orphaned files!' . PHP_EOL;

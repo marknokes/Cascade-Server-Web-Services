@@ -6,7 +6,7 @@ $which_system = isset( $argv[1] ) ? $argv[1] : false;
 if ( false === $which_system )
      die("Please specify system. t or p for testing or production respectively.");
 
-require_once( 'cascade_ws/auth_user.php' );
+require_once( 'cascade_ws_ns/auth_user.php' );
 
 if ( isset( $argv ) && sizeof( $argv ) < 3 )
 {
@@ -21,11 +21,11 @@ $results = array();
 $folder_id = $argv[2];
 
 $functions = array(
-	File::TYPE => array( "assetTreeStore" ),
-	Page::TYPE => array( "assetTreeStore" ),
-	Folder::TYPE => array( "assetTreeStore" )
+	cascade_ws_asset\File::TYPE => array( "assetTreeStore" ),
+	cascade_ws_asset\Page::TYPE => array( "assetTreeStore" ),
+	cascade_ws_asset\Folder::TYPE => array( "assetTreeStore" )
 );
 
-$cascade->getAsset( Folder::TYPE, $folder_id )->getAssetTree()->traverse( $functions, NULL, $results ); 
+$cascade->getAsset( cascade_ws_asset\Folder::TYPE, $folder_id )->getAssetTree()->traverse( $functions, NULL, $results ); 
 
 print_r( $results );

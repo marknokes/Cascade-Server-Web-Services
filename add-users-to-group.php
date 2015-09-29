@@ -11,11 +11,9 @@ if ( false === $which_system )
 if ( false === $group )
      die("Please specify group");
 
-require_once( 'cascade_ws/auth_user.php' );
+require_once( 'cascade_ws_ns/auth_user.php' );
 
 $users_added = addAllUsersToGroup( $service, $group );
 
 foreach( $users_added as $username )
-{
     echo $username . " added to " . $group . "\r\n";
-}

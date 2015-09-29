@@ -20,7 +20,7 @@ $csv_headers 	= array(
     'Pages created in the last ' . $last_num_days . ' day(s)'
 );
 
-require_once( 'cascade_ws/auth_user.php' );
+require_once( 'cascade_ws_ns/auth_user.php' );
 
 if ( isset( $argv ) && sizeof( $argv ) < 4 )
 {
@@ -31,7 +31,7 @@ if ( isset( $argv ) && sizeof( $argv ) < 4 )
     exit;
 }
 
-$results = $report->setRootFolder( $cascade->getFolder( $folder_path, $site ) )->reportLast( 'createdDate', $last_num_days, T::FORWARD );
+$results = $report->setRootFolder( $cascade->getFolder( $folder_path, $site ) )->reportLast( 'createdDate', $last_num_days, cascade_ws_constants\T::FORWARD );
 
 $fp = fopen( 'C:\Users\Public\Desktop\report_' . time() . '.csv', 'w' );
 
