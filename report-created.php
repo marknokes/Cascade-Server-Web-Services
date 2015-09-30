@@ -35,7 +35,9 @@ fputcsv( $fp, $csv_headers );
 $max = max( sizeof( $results['file'] ), sizeof( $results['page'] ) );
 
 for ($i = 0 ; $i < $max ; $i++){
-  fputcsv($fp, array( $results['file'][$i], $results['page'][$i] ) ) ;
+    $file = isset( $results['file'][$i] ) ? $results['file'][$i] : '';
+    $page = isset( $results['page'][$i] ) ? $results['page'][$i] : '';
+    fputcsv($fp, array( $file, $page ) ) ;
 }
 
 fclose($fp);
