@@ -6,8 +6,6 @@ $which_system = isset( $argv[1] ) ? $argv[1] : false;
 if ( false === $which_system )
      die("Please specify system. t or p for testing or production respectively.");
 
-require_once( 'cascade_ws_ns/auth_user.php' );
-
 if ( isset( $argv ) && sizeof( $argv ) < 5 )
 {
     echo PHP_EOL . 'Error - 4 Args required.' . PHP_EOL . PHP_EOL; 
@@ -17,6 +15,8 @@ if ( isset( $argv ) && sizeof( $argv ) < 5 )
 	echo 'Exclude Self  true or false' . PHP_EOL;
 	exit;
 }
+
+require_once( 'cascade_ws_ns/auth_user.php' );
 
 $results 		= array();
 

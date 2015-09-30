@@ -1,9 +1,9 @@
 <?php
 if ( !isset( $argv ) ) exit; // Prevent browser access
 
-$which_system = isset( $argv[1] ) ? $argv[1] : false;
+$which_system 	= isset( $argv[1] ) ? $argv[1] : false;
 
-$group = isset( $argv[2] ) ? $argv[2] : false;
+$group 			= isset( $argv[2] ) ? $argv[2] : false;
 
 if ( false === $which_system )
      die("Please specify system. t or p for testing or production respectively.");

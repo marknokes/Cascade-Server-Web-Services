@@ -1,14 +1,23 @@
 <?php
 if ( !isset( $argv ) ) exit; // Prevent browser access
 
-$wwwrootPath 	= "/inetpub/wwwroot/";
-
-$site 			= 'Cascade Server Site Name';
-
 $which_system 	= isset( $argv[1] ) ? $argv[1] : false;
+
+$wwwrootPath 	= $argv[2];
+
+$site 			= $argv[3];
 
 if ( false === $which_system )
      die("Please specify system. t or p for testing or production respectively.");
+
+if ( isset( $argv ) && sizeof( $argv ) < 4 )
+{
+	echo PHP_EOL . 'Error - 3 Args required.' . PHP_EOL . PHP_EOL; 
+	echo 'System     [t,p] t = testing, p = production' . PHP_EOL;
+	echo 'www root   Ex: /inetpub/wwwroot/' . PHP_EOL;
+	echo 'Site       Name of the site in Cascade. Ex: "Some Site Name"' . PHP_EOL;
+	exit;
+}
 
 require_once( 'cascade_ws_ns/auth_user.php' );
 

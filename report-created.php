@@ -11,8 +11,6 @@ $csv_headers 	= array(
     'Pages created in the last ' . $last_num_days . ' day(s)'
 );
 
-require_once( 'cascade_ws_ns/auth_user.php' );
-
 if ( isset( $argv ) && sizeof( $argv ) < 4 )
 {
     echo PHP_EOL . 'Error - 3 Args required.' . PHP_EOL . PHP_EOL; 
@@ -21,6 +19,8 @@ if ( isset( $argv ) && sizeof( $argv ) < 4 )
     echo 'Folder path (single forward slash = Base folder)' . PHP_EOL;
     exit;
 }
+
+require_once( 'cascade_ws_ns/auth_user.php' );
 
 $results = $report->setRootFolder( $cascade->getFolder( $folder_path, $site ) )->reportLast( 'createdDate', $last_num_days, cascade_ws_constants\T::FORWARD );
 

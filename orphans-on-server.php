@@ -17,8 +17,6 @@ if ( "p" !== $which_system && $production === $machine )
 elseif( "t" !== $which_system && $test === $machine )
      die("You specified production but you're on the test server!");
 
-require_once( 'cascade_ws_ns/auth_user.php' );
-
 if ( isset( $argv ) && sizeof( $argv ) < 6 )
 {
     echo PHP_EOL . 'Error - 5 Args required.' . PHP_EOL . PHP_EOL; 
@@ -29,6 +27,8 @@ if ( isset( $argv ) && sizeof( $argv ) < 6 )
     echo 'Mode       l = list, d = delete' . PHP_EOL;
     exit;
 }
+
+require_once( 'cascade_ws_ns/auth_user.php' );
 
 $root_path   = $argv[2];
 
