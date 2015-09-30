@@ -331,7 +331,7 @@ abstract class Asset
             $results = array();
             
             // there are subscribers
-            if isset( $this->service->getReply()->listSubscribersReturn->subscribers->assetIdentifier )
+            if ( isset( $this->service->getReply()->listSubscribersReturn->subscribers->assetIdentifier ) )
             {
                 $subscribers = 
                     $this->service->getReply()->listSubscribersReturn->subscribers->assetIdentifier;
