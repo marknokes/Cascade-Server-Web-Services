@@ -16,4 +16,4 @@ require_once( 'cascade_ws_ns/auth_user.php' );
 $users_added = addAllUsersToGroup( $service, $group );
 
 foreach( $users_added as $username )
-    echo $username . " added to " . $group . "\r\n";
+    echo $username . " added to " . $group . PHP_EOL;

@@ -1,11 +1,11 @@
 <?php
 if ( !isset( $argv ) ) exit; // Prevent browser access
 
-$production = "PRODUCTION_SERVER_NAME";
+$production     = "PRODUCTION_SERVER_NAME";
 
-$test = "TEST_SERVER_NAME";
+$test           = "TEST_SERVER_NAME";
 
-$which_system = isset( $argv[1] ) ? $argv[1] : false;
+$which_system   = isset( $argv[1] ) ? $argv[1] : false;
 
 if ( false === $which_system || ( $which_system != "p" && $which_system != "t" ) )
      die("Please specify system. t or p for testing or production respectively.");

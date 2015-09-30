@@ -10,12 +10,12 @@ require_once( 'cascade_ws_ns/auth_user.php' );
 
 if ( isset( $argv ) && sizeof( $argv ) < 6 )
 {
-	echo "\r\n" . 'Error - 5 Args required.' . "\r\n" . "\r\n"; 
-	echo 'System     [t,p] t = testing, p = production' . "\r\n";
-	echo 'Site Name  Site name listed in Cascade Server' . "\r\n";
-	echo 'Folder Id  Click folder in cascade copy string from URL after id=' . "\r\n";
-	echo 'Node       Look in data def. Ex: banner;content2' . "\r\n";
-	echo 'New Text   The text that will replace old text.' . "\r\n";
+	echo PHP_EOL . 'Error - 5 Args required.' . PHP_EOL . PHP_EOL; 
+	echo 'System     [t,p] t = testing, p = production' . PHP_EOL;
+	echo 'Site Name  Site name listed in Cascade Server' . PHP_EOL;
+	echo 'Folder Id  Click folder in cascade copy string from URL after id=' . PHP_EOL;
+	echo 'Node       Look in data def. Ex: banner;content2' . PHP_EOL;
+	echo 'New Text   The text that will replace old text.' . PHP_EOL;
 	exit;
 }
 
@@ -35,4 +35,4 @@ $cascade->getAsset( cascade_ws_asset\Folder::TYPE, $folder_id, $site_name )->
 	getAssetTree()->
 		traverse( $function, $params );
 
-echo "\r\n" . 'Update complete.' . "\r\n";
+echo PHP_EOL . 'Update complete.' . PHP_EOL;

@@ -10,17 +10,17 @@ require_once( 'cascade_ws_ns/auth_user.php' );
 
 if ( isset( $argv ) && sizeof( $argv ) < 3 )
 {
-	echo "\r\n" . 'Error - 2 Args required.' . "\r\n" . "\r\n"; 
-	echo 'System     [t,p] t = testing, p = production' . "\r\n";
-	echo 'Folder Id  Click folder in cascade copy string from URL after id=' . "\r\n";
+	echo PHP_EOL . 'Error - 2 Args required.' . PHP_EOL . PHP_EOL; 
+	echo 'System     [t,p] t = testing, p = production' . PHP_EOL;
+	echo 'Folder Id  Click folder in cascade copy string from URL after id=' . PHP_EOL;
 	exit;
 }
 
-$results = array();
+$results 	= array();
 
-$folder_id = $argv[2];
+$folder_id 	= $argv[2];
 
-$functions = array(
+$functions 	= array(
 	cascade_ws_asset\File::TYPE => array( "assetTreeStore" ),
 	cascade_ws_asset\Page::TYPE => array( "assetTreeStore" ),
 	cascade_ws_asset\Folder::TYPE => array( "assetTreeStore" )

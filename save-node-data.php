@@ -1,20 +1,17 @@
 <?php
-
-error_reporting( E_ERROR );
-
 if ( !isset( $argv ) ) exit; // Prevent browser access
 
-$filename = "subsites_" . time() . ".txt";
+$filename 		= "subsites_" . time() . ".txt";
 
-$time = date("F j, Y, g:i a");
+$time 			= date("F j, Y, g:i a");
 
-$which_system = isset( $argv[1] ) ? $argv[1] : false;
+$which_system 	= isset( $argv[1] ) ? $argv[1] : false;
 
-$node = isset( $argv[2] ) ? $argv[2] : false;
+$node 			= isset( $argv[2] ) ? $argv[2] : false;
 
-$site_name = isset( $argv[3] ) ? $argv[3] : false;
+$site_name 		= isset( $argv[3] ) ? $argv[3] : false;
 
-$messages = array();
+$messages 		= array();
 
 if ( false === $which_system )
     $messages[] = "Arg 1 should be system. t or p for testing or production respectively.";
@@ -25,7 +22,7 @@ if ( false === $site_name )
 
 if ( $messages ) {
 	foreach( $messages as $message )
-		echo $message . "\r\n";
+		echo $message . PHP_EOL;
 	die();
 }
 

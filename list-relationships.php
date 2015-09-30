@@ -10,21 +10,21 @@ require_once( 'cascade_ws_ns/auth_user.php' );
 
 if ( isset( $argv ) && sizeof( $argv ) < 5 )
 {
-    echo "\r\n" . 'Error - 4 Args required.' . "\r\n" . "\r\n"; 
-	echo 'System        [t,p] t = testing, p = production' . "\r\n";
-	echo 'Folder        Example: /administration/subfolder' . "\r\n";
-	echo 'Site  	    Name of Cascade Server Website' . "\r\n";
-	echo 'Exclude Self  true or false' . "\r\n";
+    echo PHP_EOL . 'Error - 4 Args required.' . PHP_EOL . PHP_EOL; 
+	echo 'System        [t,p] t = testing, p = production' . PHP_EOL;
+	echo 'Folder        Example: /administration/subfolder' . PHP_EOL;
+	echo 'Site  	    Name of Cascade Server Website' . PHP_EOL;
+	echo 'Exclude Self  true or false' . PHP_EOL;
 	exit;
 }
 
-$results = array();
+$results 		= array();
 
-$folder = $argv[2];
+$folder 		= $argv[2];
 
-$site = $argv[3];
+$site 			= $argv[3];
 
-$exclude_self = $argv[4];
+$exclude_self 	= $argv[4];
 
 $functions = array(
 	cascade_ws_asset\File::TYPE => array( "assetTreeGetSubscribers" ),
@@ -35,7 +35,6 @@ $functions = array(
 
 $cascade->getAsset( cascade_ws_asset\Folder::TYPE, $folder, $site )->getAssetTree()->traverse( $functions, NULL, $results ); 
 
-$doc = "";
 
 function exclude_self( $item, $key )
 {
@@ -43,6 +42,8 @@ function exclude_self( $item, $key )
 	
 	return false === strpos( $item, trim( $folder, "/" ) );
 }
+
+$doc = "";
 
 foreach( $results as $page => $subscribers )
 {
@@ -55,7 +56,7 @@ foreach( $results as $page => $subscribers )
 		$doc .= "Asset: " . $page;
 		$doc .= "\n\t";
 		$doc .= implode( "\n\t", $subscribers );
-		$doc .= "\r\n\r\n";
+		$doc .= PHP_EOL . PHP_EOL;
 	}
 }
 

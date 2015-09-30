@@ -1,16 +1,7 @@
 <?php
-
-/*
-* This will cause fatal error if there are too many assets in a container. It tends to consume too much memory!
-*/
-
-error_reporting(E_ALL);
-
-if ( !isset( $argv ) )
-    exit; // Prevent browser access
+if ( !isset( $argv ) ) exit; // Prevent browser access
 
 $which_system   = 'p'; // required for auth_user.php below
-$break          = "\r\n";
 $last_num_days  = isset( $argv[1] ) ? $argv[1] : 1;
 $site         	= isset( $argv[2] ) ? $argv[2] : "";
 $folder_path 	= isset( $argv[3] ) ? $argv[3] : "/";
@@ -24,10 +15,10 @@ require_once( 'cascade_ws_ns/auth_user.php' );
 
 if ( isset( $argv ) && sizeof( $argv ) < 4 )
 {
-    echo $break . 'Error - 3 Args required.' . $break . $break; 
-    echo 'Number of Days' . $break;
-    echo 'Site Name (enclose in double-quotes if contains spaces)' . $break;
-    echo 'Folder path (single forward slash = Base folder)' . $break;
+    echo PHP_EOL . 'Error - 3 Args required.' . PHP_EOL . PHP_EOL; 
+    echo 'Number of Days' . PHP_EOL;
+    echo 'Site Name (enclose in double-quotes if contains spaces)' . PHP_EOL;
+    echo 'Folder path (single forward slash = Base folder)' . PHP_EOL;
     exit;
 }
 

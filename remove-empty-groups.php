@@ -17,10 +17,10 @@ if ( $empty_groups )
 	{
 		$group_obj  = $group_data['obj'];
 		$service->delete( $group_obj->getIdentifier() );
-		echo "Removed " . $group_data['group'] . " group \r\n";
+		echo "Removed " . $group_data['group'] . " group" . PHP_EOL;
 	}
 }
 else
 {
-    echo "No empty groups to delete! \r\n";
+    echo "No empty groups to delete!" . PHP_EOL;
 }

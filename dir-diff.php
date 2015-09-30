@@ -1,21 +1,20 @@
 <?php
-
 if ( !isset( $argv ) ) exit; // Prevent browser access
 
-$wwwrootPath = "/inetpub/wwwroot/";
+$wwwrootPath 	= "/inetpub/wwwroot/";
 
-$site = 'Cascade Server Site Name';
+$site 			= 'Cascade Server Site Name';
 
-$which_system = isset( $argv[1] ) ? $argv[1] : false;
+$which_system 	= isset( $argv[1] ) ? $argv[1] : false;
 
 if ( false === $which_system )
      die("Please specify system. t or p for testing or production respectively.");
 
 require_once( 'cascade_ws_ns/auth_user.php' );
 
-$server_dirs = array_filter( glob( $wwwrootPath . '*' ), 'is_dir' );
+$server_dirs 		= array_filter( glob( $wwwrootPath . '*' ), 'is_dir' );
 
-$wcms_directories = array();
+$wcms_directories 	= array();
 
 foreach( $server_dirs as &$dir )
 {
@@ -37,8 +36,6 @@ foreach( $server_dirs as &$dir )
 $diff = array_diff( $server_dirs, $wcms_directories );
 
 foreach( $diff as $diff_dir )
-{
-	echo $diff_dir . "\r\n";
-}
+	echo $diff_dir . PHP_EOL;
 
-echo "\r\n" . 'Total Directories: ' . count( $diff ) . "\r\n";
+echo PHP_EOL . 'Total Directories: ' . count( $diff ) . PHP_EOL;
