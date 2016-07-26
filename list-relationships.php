@@ -65,3 +65,5 @@ $fp = fopen( time() . '.txt', 'w' );
 fwrite( $fp, $doc );
 
 fclose( $fp );
+
+echo PHP_EOL . "Complete (file located in web-services directory)" . PHP_EOL;

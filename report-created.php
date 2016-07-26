@@ -41,3 +41,5 @@ for ($i = 0 ; $i < $max ; $i++){
 }
 
 fclose($fp);
+
+echo PHP_EOL . "Complete (file on desktop)" . PHP_EOL;
