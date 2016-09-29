@@ -16,7 +16,7 @@ if ( isset( $argv ) && sizeof( $argv ) < 5 )
 	exit;
 }
 
-require_once( 'cascade_ws_ns/auth_user.php' );
+require_once( "cascade_ws_ns\\auth_user.php" );
 
 $results 		= array();
 
@@ -33,8 +33,11 @@ $functions = array(
 	cascade_ws_asset\XmlBlock::TYPE => array( "assetTreeGetSubscribers" )
 );
 
-$cascade->getAsset( cascade_ws_asset\Folder::TYPE, $folder, $site )->getAssetTree()->traverse( $functions, NULL, $results ); 
-
+try {
+	$cascade->getAsset( cascade_ws_asset\Folder::TYPE, $folder, $site )->getAssetTree()->traverse( $functions, NULL, $results ); 
+} catch( Exception $e ) {
+	echo $e->getMessage() . PHP_EOL;
+}
 
 function exclude_self( $item, $key )
 {
